@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>  
+<!DOCTYPE hibernate-configuration PUBLIC  
+          "-//Hibernate/Hibernate Configuration DTD 5.4//EN"  
+          "http://www.hibernate.org/dtd/hibernate-configuration-5.3.dtd">
+  
+<hibernate-configuration>
+    <session-factory>
+        <property name="dialect">org.hibernate.dialect.Oracle10gDialect</property>
+        <property name="connection.url">jdbc:oracle:thin:@localhost:1521:xe</property>  
+        <property name="connection.username">REDOUANOV</property>
+        <property name="connection.password">Utrecht030</property>
+        <property name="connection.driver_class">oracle.jdbc.driver.OracleDriver</property>  
+    <mapping resource="Reiziger.hbm.xml"/>
+    <mapping resource="OVchipkaart.hbm.xml"/>
+    
+    
+    </session-factory>
+</hibernate-configuration> 
+
