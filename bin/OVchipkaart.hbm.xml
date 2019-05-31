@@ -14,5 +14,7 @@
 		<property name = "geldig" column = "geldigtot" type = "date" />
 		<property name = "reizigerid" column = "reizigerid" type = "int" />
 		
+		
+		
 	</class>
 </hibernate-mapping><?xml version="1.0" encoding="UTF-8"?>

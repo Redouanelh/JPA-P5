@@ -14,5 +14,13 @@
 		<property name = "achternaam" column = "achternaam" type = "string" />
 		<property name = "gbdatum" column = "gebortedatum" type = "date" />
 		
+		<bag name="ovchipkaarten" table="ov_chipkaart" 
+				inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="reizigerid" not-null="true" />
+            </key>
+            <one-to-many class="ovHibernate.OVchipkaart" />
+        </bag>
+		
 	</class>
 </hibernate-mapping>

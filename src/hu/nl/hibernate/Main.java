@@ -3,6 +3,7 @@ package hu.nl.hibernate;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -35,15 +36,14 @@ public class Main {
 //      m.updateReiziger(9, updatedReiziger);
 //      m.deleteReiziger(9);
 //      m.listReizigers();
+      m.findReizigerById(2);
             
 //      m.addOv(83928, 2.80, 1, Date.valueOf("2020-09-21"), 3);
 //      m.updateOv(83928, updatedOv);
 //      m.deleteOv(83928);
-      
-      // Methode maken find ov by id.
-      
-//      m.listOv();
-      
+//      m.findOvById(35283);
+//    	m.listOv();
+//      m.findOvByReiziger(2);
       
       System.out.println("success!");    
   }
@@ -86,6 +86,91 @@ public class Main {
 	  return reizigerid;
   }
   
+  public OVchipkaart findOvById(int id) {
+	  Session session = factory.openSession();
+	  Transaction t = null;
+	  
+	  OVchipkaart ov = null;
+	  
+	  try {
+		  t = session.beginTransaction();
+			  OVchipkaart ovkaart = (OVchipkaart) session.get(OVchipkaart.class, id);
+
+			  System.out.println("Kaartnummer: " + ovkaart.getKaartnummer());
+			  System.out.println("Geldig tot: " + ovkaart.getGeldig());
+			  System.out.println("Klasse: " + ovkaart.getKlasse());
+			  System.out.println("Saldo: " + ovkaart.getSaldo());
+			  System.out.println("Reizigerid: " + ovkaart.getReizigerid() + "\n");
+			  
+			  ov = ovkaart;
+		  t.commit();
+	  } catch (HibernateException e) {
+		  if(t != null) t.rollback();
+		  e.printStackTrace();
+	  } finally {
+		  session.close();
+	  }
+	return ov;  
+  }
+  
+  public Reiziger findReizigerById(int id) {
+	  Session session = factory.openSession();
+	  Transaction t = null;
+	  
+	  Reiziger reiziger = null;
+	  
+	  try {
+		  t = session.beginTransaction();
+			  Reiziger r = (Reiziger) session.get(Reiziger.class, id);
+			  
+			  System.out.println("Reizigerid: " + r.getReizigerid());
+			  System.out.println("Voorletters: " + r.getVoorletter());
+			  System.out.println("Tussenvoegsel: " + r.getTussenvoegsel());
+			  System.out.println("Achternaam: " + r.getAchternaam());
+			  System.out.println("Geboortedatum: " + r.getGbdatum() + "\n");
+			  
+			  r.setOvchipkaarten((findOvByReiziger(id)));
+			  
+			  reiziger = r;
+		  t.commit();
+	  } catch (HibernateException e) {
+		  if(t != null) t.rollback();
+		  e.printStackTrace();
+	  } finally {
+		  session.close();
+	  }
+	return reiziger;  
+  }
+  
+  public List<OVchipkaart> findOvByReiziger(int id) {
+	  Session session = factory.openSession();
+	  Transaction t = null;
+	  
+	  List<OVchipkaart> ov = new ArrayList<OVchipkaart>();
+	  
+	  try {
+		  t = session.beginTransaction();
+		  List ovkaarten = session.createQuery("FROM OVchipkaart where reizigerid = " + id).list();
+		  for (Iterator iterator = ovkaarten.iterator(); iterator.hasNext();) {
+			  OVchipkaart ovkaart = (OVchipkaart) iterator.next();
+			  System.out.println("Kaartnummer: " + ovkaart.getKaartnummer());
+			  System.out.println("Geldig tot: " + ovkaart.getGeldig());
+			  System.out.println("Klasse: " + ovkaart.getKlasse());
+			  System.out.println("Saldo: " + ovkaart.getSaldo());
+			  System.out.println("Reizigerid: " + ovkaart.getReizigerid() + "\n");
+			  
+		  }
+		  ov = ovkaarten;
+		  t.commit();
+	  } catch (HibernateException e) {
+		  if(t != null) t.rollback();
+		  e.printStackTrace();
+	  } finally {
+		  session.close();
+	  }
+	return ov;  
+  }
+  
   public void listOv() {
 	  Session session = factory.openSession();
 	  Transaction t = null;
@@ -120,11 +205,14 @@ public class Main {
 		  List reizigers = session.createQuery("FROM Reiziger").list();
 		  for (Iterator iterator = reizigers.iterator(); iterator.hasNext();) {
 			  Reiziger reiziger = (Reiziger) iterator.next();
+			  
+			  System.out.println("Reizigerid: " + reiziger.getReizigerid());
 			  System.out.println("Voorletters: " + reiziger.getVoorletter());
 			  System.out.println("Tussenvoegsel: " + reiziger.getTussenvoegsel());
 			  System.out.println("Achternaam: " + reiziger.getAchternaam());
 			  System.out.println("Geboortedatum: " + reiziger.getGbdatum() + "\n");
-			  // Hier moet ook nog de ov kaarten functie worden aangeroepen voor deze reiziger dus iets van find ov by reizigerid
+			  
+			  reiziger.setOvchipkaarten((findOvByReiziger(reiziger.getReizigerid())));
 
 		  }
 		  t.commit();

@@ -2,6 +2,7 @@ package reizigerHibernate;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 import ovHibernate.OVchipkaart;
 
@@ -11,7 +12,8 @@ public class Reiziger {
 	private String tussenvoegsel;
 	private String achternaam;
 	private Date gbdatum;
-	private ArrayList<OVchipkaart> ovchipkaarten = new ArrayList<OVchipkaart>();
+
+	private List<OVchipkaart> ovchipkaarten = new ArrayList<OVchipkaart>();
 	
 	public Reiziger() {
 	}
@@ -45,13 +47,11 @@ public class Reiziger {
 		this.gbdatum = gbdatum;
 	}
 
-
-	public ArrayList<OVchipkaart> getOvchipkaarten() {
+	public List<OVchipkaart> getOvchipkaarten() {
 		return ovchipkaarten;
 	}
 
-
-	public void setOvchipkaarten(ArrayList<OVchipkaart> ovchipkaarten) {
+	public void setOvchipkaarten(List<OVchipkaart> ovchipkaarten) {
 		this.ovchipkaarten = ovchipkaarten;
 	}
 
@@ -86,14 +86,6 @@ public class Reiziger {
 	
 	public void saveOv(OVchipkaart ov) {
 		ovchipkaarten.add(ov);
-	}
-	
-	public ArrayList<OVchipkaart> getOv() {
-		return ovchipkaarten;
-	}
-	
-	public void setOvKaarten(ArrayList<OVchipkaart> list) {
-		ovchipkaarten = list;
 	}
 	
 	
