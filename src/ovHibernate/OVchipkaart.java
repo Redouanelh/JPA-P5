@@ -83,5 +83,9 @@ public class OVchipkaart {
 		klasse = kl;
 	}
 	
+	public String toString() {
+		return "Kaartnummers: " + kaartnummer + ", ";
+	}
+	
 
 }
